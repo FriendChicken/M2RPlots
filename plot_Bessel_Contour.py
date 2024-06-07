@@ -1,46 +1,30 @@
 from manim import *
 
-class CombinedGraphs(Scene):
+class CombineCurves(Scene):
     def construct(self):
-        # Create axes
-        axes = Axes(
-            x_range=[-3, 3, 1],
-            y_range=[-3, 3, 1],
-            axis_config={"color": BLUE}
+        # Define two curves
+        curve1 = ParametricFunction(lambda t: np.array([t, np.sin(t), 0]), t_range=[-TAU, TAU], color=BLUE)
+        curve2 = ParametricFunction(lambda t: np.array([t, np.cos(t), 0]), t_range=[-TAU, TAU], color=RED)
+
+        # Find intersection point
+        intersection_point = curve1.get_end()
+
+        # Create combined curve up to the intersection point
+        combined_curve = ParametricFunction(lambda t: np.array([t, np.sin(t) + np.cos(t), 0]), t_range=[-TAU, intersection_point[0]], color=GREEN)
+
+        # Erase parts of original curves after intersection point
+        curve1_erased = curve1.copy().pointwise_become_partial(curve1, 0, curve1.t_from_x(intersection_point[0]))
+        curve2_erased = curve2.copy().pointwise_become_partial(curve2, 0, curve2.t_from_x(intersection_point[0]))
+
+        self.play(
+            Create(curve1),
+            Create(curve2)
         )
+        self.wait()
 
-        # Define two functions
-        def func1(x):
-            return np.sin(x)
-
-        def func2(x):
-            return 0.5 * x ** 2
-
-        # Create graphs for the functions
-        graph1 = axes.plot(func1, color=YELLOW)
-        graph2 = axes.plot(func2, color=GREEN)
-
-        # Define a smooth transition function
-        def smooth_transition(x, alpha=0.5):
-            return alpha * func1(x) + (1 - alpha) * func2(x)
-
-        # Create the combined graph with smooth transition
-        combined_graph = axes.plot(lambda x: smooth_transition(x), color=RED)
-
-        # Add labels for the graphs
-        label1 = axes.get_graph_label(graph1, label="sin(x)", x_val=2, direction=UP)
-        label2 = axes.get_graph_label(graph2, label="0.5x^2", x_val=-2, direction=UP)
-        combined_label = axes.get_graph_label(combined_graph, label="Combined", x_val=0, direction=UP)
-
-        # Add axes and graphs to the scene
-        self.play(Create(axes))
-        self.play(Create(graph1), Write(label1))
-        self.play(Create(graph2), Write(label2))
-        self.play(Create(combined_graph), Write(combined_label))
-
-        # Hold the final frame
-        self.wait(2)
-
-if __name__ == "__main__":
-    scene = CombinedGraphs()
-    scene.render()
+        self.play(
+            ReplacementTransform(curve1, curve1_erased),
+            ReplacementTransform(curve2, curve2_erased),
+            Create(combined_curve)
+        )
+        self.wait()

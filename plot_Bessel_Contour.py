@@ -1,5 +1,5 @@
 from manim import *
-
+little_e=0.000001
 class CombineCurves(Scene):
     def construct(self):
         # Define two curves
@@ -17,7 +17,10 @@ class CombineCurves(Scene):
         curve2 = [ParametricFunction(lambda t: np.array([np.sqrt((a*t**2-t**3-t)/(t-a)), t, 0]), t_range=[-1, 0], color=ORANGE),
         ParametricFunction(lambda t: np.array([-np.sqrt((a*t**2-t**3-t)/(t-a)), t, 0]), t_range=[-1.99, -1], color=ORANGE)]
         a=-3
-        curve3 = ParametricFunction(lambda t:  np.array([t, np.sqrt((a*t**2-t**3+t)/(t-a)), 0]), t_range=[-3.25, -3.01], color=RED)
+        curve3 = [ParametricFunction(lambda t:  np.array([t, np.sqrt((a*t**2-t**3+t)/(t-a)), 0]), t_range=[-np.sqrt(13/4)-1.5+little_e, -3.01], color=RED),
+        ParametricFunction(lambda t:  np.array([t, -np.sqrt((a*t**2-t**3+t)/(t-a)), 0]), t_range=[-np.sqrt(13/4)-1.5+little_e, -3.01], color=RED)]
+        curve4 = [ParametricFunction(lambda t:  np.array([t, np.sqrt((a*t**2-t**3+t)/(t-a)), 0]), t_range=[little_e,np.sqrt(13/4)-1.5-little_e], color=RED),
+        ParametricFunction(lambda t:  np.array([t, -np.sqrt((a*t**2-t**3+t)/(t-a)), 0]), t_range=[little_e,np.sqrt(13/4)-1.5-little_e], color=RED)]
 
         # Find intersection point
         #intersection_point = curve1.get_end()
@@ -32,7 +35,8 @@ class CombineCurves(Scene):
         self.add(
             *curve1,
             *curve2,
-            curve3
+            *curve3,
+            *curve4
         )
         self.wait()
         """

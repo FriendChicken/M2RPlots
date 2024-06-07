@@ -1,22 +1,29 @@
+
+
+import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import pyplot as plt
-
-# generate data
-x = np.r_[0:100:30j]
-y = np.r_[0:1:20j]
-X, Y = np.meshgrid(x, y)
-Z = X*np.exp(1j*Y) # some arbitrary complex data
-
-# plot it
-def plotit(z, title):
-    plt.figure()
-    cs = plt.contour(X,Y,z) # contour() accepts complex values
-    plt.clabel(cs, inline=1, fontsize=10) # add labels to contours
-    plt.title(title)
-    plt.savefig(title+'.png')
-
-plotit(Z, 'real')
-plotit(Z.real, 'explicit real')
-plotit(Z.imag, 'imagenary')
-
+a = 2
+y = np.linspace(0,2,1000)
+x = np.sqrt((a*y**2-y**3-y)/(y-a))
+x = np.concatenate((-x,x), axis=0)
+y = np.concatenate((y,y), axis=0)
+plt.plot(x, y, label='I=' + str(a))
+# Generate data
+for i in range(-5,5):
+    a = i
+    x = np.linspace(-10,10,10000)
+    y = np.sqrt((a*x**2-x**3+x)/(x-a))
+    x = np.concatenate((x,x), axis=0)
+    y = np.concatenate((-y,y), axis=0)
+    plt.plot(x, y, label='R=' + str(a))
+# Plotting multiple lines on a single plot
+#plt.plot(x, y2, label='Cos(x)', color='r', linestyle='--')
+  
+# Adding labels and title
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Multiple Lines Plot')
+ 
+# Displaying the legend and the plot
+plt.legend()
 plt.show()

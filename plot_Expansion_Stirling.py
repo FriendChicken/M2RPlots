@@ -1,5 +1,4 @@
 from manim import *
-from math import gamma
 epsilon = 0.5
 class GraphExample(Scene):
     def construct(self):
@@ -35,12 +34,14 @@ class GraphExample(Scene):
             x_range=[0,4],
             color = WHITE
         )
-        Stirling_label = axes.get_graph_label(Stirling_graph, "Stirling Aprox.")
+        Stirling_label = axes.get_graph_label(Stirling_graph, Tex("Stirling Aprox."))
         self.add(Stirling_graph,Stirling_label)
-        Gamma_graph = axes.plot(
-            lambda t: gamma(t+1), 
-            x_range=[0,4],
-            color = WHITE
-        )
-        Gamma_label = axes.get_graph_label(Gamma_graph, "Gamma(n)")
-        self.add(Gamma_graph,Gamma_label)
+        ans =1
+        for i in range(1,4):
+            ans*=i
+            dot = Dot(color=WHITE)
+            pos = axes.c2p(i,ans)
+            dot.move_to(pos)
+            line_v = axes.get_vertical_line(pos,color=BLUE)
+            line_h = axes.get_horizontal_line(pos,color=BLUE)
+            self.add(line_v,line_h,dot)

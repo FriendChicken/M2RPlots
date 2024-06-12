@@ -13,6 +13,10 @@ class GraphExample(Scene):
         labels = axes.get_axis_labels(
             x_label=Tex("$t$", fill_color=BLACK), y_label=Tex("$y$", fill_color=BLACK)
         )
+        x_axes = axes.get_x_axis()
+        y_axes = axes.get_y_axis()
+        x_axes.numbers.set_color(BLACK)
+        y_axes.numbers.set_color(BLACK)
         self.play(Write(axes, lag_ratio=0.01, run_time=1))
 
         # Axes.get_graph will return the graph of a function

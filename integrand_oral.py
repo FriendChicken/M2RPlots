@@ -68,9 +68,10 @@ class GraphExample(Scene):
         self.play(FadeIn(Ldot_2, scale=0.5))
         dot1_labelText=MathTex('1-\delta', fill_color=BLACK, font_size = 36).next_to(Ldot_1, DOWN + LEFT)
         dot2_labelText=MathTex('1+\delta', fill_color=BLACK, font_size = 36).next_to(Ldot_2, DOWN + RIGHT)
-        area = axes.get_area(integrand_graph, [1-epsilon, 1+epsilon], color=YELLOW, opacity=0.5)
-        self.add(line_1,line_2,dot1_labelText,dot2_labelText,area)
-        
+        #area = axes.get_area(integrand_graph, [1-epsilon, 1+epsilon], color=YELLOW, opacity=0.5)
+        area_1 = axes.get_area(integrand_graph, [0.1, 1-epsilon], color=BLUE, opacity=0.5)
+        area_2 = axes.get_area(integrand_graph, [1+epsilon,100], color=BLUE, opacity=0.5)
+        self.add(line_1,line_2,dot1_labelText,dot2_labelText,area_1, area_2)
         """title = Text("Graph of integrands as x increases", font_size=30)
         title.to_edge(UP)
         self.add(title)"""
